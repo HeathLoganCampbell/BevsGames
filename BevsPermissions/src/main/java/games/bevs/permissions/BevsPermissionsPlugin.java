@@ -10,6 +10,8 @@ public class BevsPermissionsPlugin extends JavaPlugin
     public void onEnable()
     {
         Console.log(BevsPermissions.NAME, "Enabled plugin");
+
+
     }
 
     @Override
