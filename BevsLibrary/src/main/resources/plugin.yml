@@ -1,0 +1,3 @@
+name: ${project.artifactId}
+main:  games.bevs.library.BevsPermissionsPlugin
+version: 0.0.1-SNAPSHOT
