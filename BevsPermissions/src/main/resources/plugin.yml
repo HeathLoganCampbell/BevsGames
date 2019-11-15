@@ -1,3 +1,4 @@
 name: ${project.artifactId}
-main:  games.bevs.permissions.BevsPermissionsPlugin
-version: 0.0.1-SNAPSHOT
+main: games.bevs.permissions.BevsPermissionsPlugin
+version: ${project.version}
+depend: [BevsLibrary]
