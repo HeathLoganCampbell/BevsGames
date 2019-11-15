@@ -3,7 +3,9 @@ package games.bevs.library.modules.database;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
+import games.bevs.library.commons.utils.Console;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
@@ -39,21 +41,25 @@ public class Database
         if (username != null)
             credentials.add(MongoCredential.createCredential(username, database,
                     password.toCharArray()));
+        try {
+            mongo = new MongoClient(addr, credentials);
+            morphia = new Morphia();
 
-        mongo = new MongoClient(addr, credentials);
-        morphia = new Morphia();
+            // Set class loader to spigot's class loader
+            if (plugin != null)
+                morphia.getMapper().getOptions().setObjectFactory(new DefaultCreator() {
+                    @Override
+                    protected ClassLoader getClassLoaderForClass() {
+                        return plugin.getClass().getClassLoader();
+                    }
+                });
 
-        // Set class loader to spigot's class loader
-        if (plugin != null)
-            morphia.getMapper().getOptions().setObjectFactory(new DefaultCreator()
-            {
-                @Override
-                protected ClassLoader getClassLoaderForClass()
-                {
-                    return plugin.getClass().getClassLoader();
-                }
-            });
-
+        } catch (Exception e) {
+            Console.log( "Mongo", "Failed to connect to Mongo");
+            e.printStackTrace();
+            Bukkit.shutdown();
+            throw new RuntimeException("Failed to connect to Mongo");
+        }
     }
 
     public void map(Class<?> clazz)

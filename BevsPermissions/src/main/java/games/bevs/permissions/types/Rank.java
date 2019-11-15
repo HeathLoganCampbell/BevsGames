@@ -1,11 +1,10 @@
-package games.bevs.permissions.dao;
+package games.bevs.permissions.types;
 
 import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -18,8 +17,12 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
+@RequiredArgsConstructor
+@Entity(value = "Ranks", noClassnameStored = true)
 public class Rank
 {
+    @Id
+    @NonNull
     private String nameId;
     private String displayName;
     private String tag;

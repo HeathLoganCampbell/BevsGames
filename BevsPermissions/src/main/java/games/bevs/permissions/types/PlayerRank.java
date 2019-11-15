@@ -1,4 +1,4 @@
-package games.bevs.permissions.dao;
+package games.bevs.permissions.types;
 
 public class PlayerRank
 {

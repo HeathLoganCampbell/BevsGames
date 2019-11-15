@@ -14,10 +14,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ConfigManager {
 	private HashMap<String, EasyConfig> configs = new HashMap<>();
 	private JavaPlugin plugin;
+	private JavaPlugin ownerPlugin;
 	private String packagePath;
 
-	public ConfigManager(JavaPlugin plugin, String packagePath) {
+	public ConfigManager(JavaPlugin plugin, JavaPlugin ownerPlugin, String packagePath) {
 		this.plugin = plugin;
+		this.ownerPlugin = ownerPlugin;
 		this.packagePath = packagePath;
 		updateOptionals();
 	}
@@ -90,7 +92,7 @@ public class ConfigManager {
 	private void saveConfig(String fileName) {
 		EasyConfig config = this.configs.get(fileName);
 		if (config == null) {
-			config = new EasyConfig(fileName, this.plugin);
+			config = new EasyConfig(fileName, ownerPlugin);
 			this.configs.put(fileName, config);
 		}
 

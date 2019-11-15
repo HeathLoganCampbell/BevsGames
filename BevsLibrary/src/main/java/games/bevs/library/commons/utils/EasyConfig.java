@@ -15,7 +15,7 @@ public class EasyConfig {
 
 	public EasyConfig(String name, JavaPlugin plugin) 
 	{
-		this.configFile = new File(plugin.getDataFolder().toString() + File.separatorChar + name + ".yml");
+		this.configFile = new File( name + ".yml");
 		boolean isNew = false;
 		
 		if (!this.configFile.exists()) 
