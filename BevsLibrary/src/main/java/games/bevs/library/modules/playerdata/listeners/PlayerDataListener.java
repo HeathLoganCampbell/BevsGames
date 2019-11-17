@@ -5,6 +5,7 @@ import games.bevs.library.commons.utils.Console;
 import games.bevs.library.modules.playerdata.PlayerDataHandler;
 import games.bevs.library.modules.playerdata.types.PlayerData;
 import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,6 +37,8 @@ public class PlayerDataListener<P extends PlayerData> implements Listener
 
         if(playerdata != null && playerdata.isLoaded())
         {
+            player.setPlayerListName(playerdata.getRank().getTagColor() + player.getName());
+            player.sendMessage(CC.gray + "Welcome, you're a " + playerdata.getRank().getColouredDisplayName());
             return;
         }
 

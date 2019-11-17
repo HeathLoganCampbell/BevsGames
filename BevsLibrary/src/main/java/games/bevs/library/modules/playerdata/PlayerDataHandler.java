@@ -1,5 +1,6 @@
 package games.bevs.library.modules.playerdata;
 
+import games.bevs.library.commons.utils.CC;
 import games.bevs.library.commons.utils.Console;
 import games.bevs.library.modules.database.Database;
 import games.bevs.library.modules.playerdata.listeners.PlayerDataListener;
@@ -69,12 +70,6 @@ public class PlayerDataHandler<P extends PlayerData>
         P playerData = this.fetchPlayerData(name, uniqueId);
         this.playerDataManager.registerPlayerData(playerData);
         playerData.setLoaded(true);
-
-        Player player = Bukkit.getPlayer(playerData.getUniqueId());
-        if(player != null)
-        {
-            player.setPlayerListName(playerData.getRank().getTagColor() + player.getName());
-        }
 
         Console.log("PlayerData", "Player " + name + " has connected");
     }

@@ -15,7 +15,7 @@ public enum Rank
     PRO(CC.gold, "Pro"),
     MVP(CC.blue, "MVP"),
     VIP(CC.green, "VIP"),
-    NORMAL(CC.gray, "");
+    NORMAL(CC.gray, "NORMAL");
 
     String tagColor;
     String displayName;
