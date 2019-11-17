@@ -1,13 +1,11 @@
 package games.bevs.library.modules.playerdata;
 
-import games.bevs.library.commons.utils.CC;
-import games.bevs.library.commons.utils.Console;
+import games.bevs.library.commons.Console;
 import games.bevs.library.modules.database.Database;
 import games.bevs.library.modules.playerdata.listeners.PlayerDataListener;
 import games.bevs.library.modules.playerdata.types.PlayerData;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mongodb.morphia.dao.BasicDAO;
 

@@ -1,4 +1,4 @@
-package games.bevs.library.commons.utils;
+package games.bevs.library.commons;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

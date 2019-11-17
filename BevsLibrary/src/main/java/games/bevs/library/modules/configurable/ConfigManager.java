@@ -1,12 +1,11 @@
 package games.bevs.library.modules.configurable;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 
 import games.bevs.library.commons.utils.ClassGetterUtils;
-import games.bevs.library.commons.utils.EasyConfig;
+import games.bevs.library.commons.EasyConfig;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 

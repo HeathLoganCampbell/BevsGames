@@ -1,11 +1,10 @@
 package games.bevs.library.modules.playerdata.listeners;
 
-import games.bevs.library.commons.utils.CC;
-import games.bevs.library.commons.utils.Console;
+import games.bevs.library.commons.CC;
+import games.bevs.library.commons.Console;
 import games.bevs.library.modules.playerdata.PlayerDataHandler;
 import games.bevs.library.modules.playerdata.types.PlayerData;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

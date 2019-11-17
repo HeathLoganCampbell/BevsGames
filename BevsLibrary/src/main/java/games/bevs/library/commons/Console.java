@@ -1,4 +1,4 @@
-package games.bevs.library.commons.utils;
+package games.bevs.library.commons;
 
 import org.fusesource.jansi.Ansi;
 

@@ -25,7 +25,7 @@
 package games.bevs.library.commons.utils.reflection;
 
 
-import games.bevs.library.commons.utils.Console;
+import games.bevs.library.commons.Console;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;

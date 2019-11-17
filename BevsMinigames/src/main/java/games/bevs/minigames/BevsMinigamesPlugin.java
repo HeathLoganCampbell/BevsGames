@@ -1,15 +1,11 @@
 package games.bevs.minigames;
 
-import games.bevs.library.commons.utils.Console;
+import games.bevs.library.commons.Console;
 import games.bevs.library.modules.configurable.ConfigManager;
 import games.bevs.library.modules.database.Database;
 import games.bevs.library.modules.database.DatabaseConfig;
 import games.bevs.library.modules.playerdata.PlayerDataHandler;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mongodb.morphia.dao.BasicDAO;
-
-import java.util.UUID;
 
 public class BevsMinigamesPlugin extends JavaPlugin
 {

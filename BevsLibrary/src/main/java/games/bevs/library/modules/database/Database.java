@@ -3,7 +3,7 @@ package games.bevs.library.modules.database;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
-import games.bevs.library.commons.utils.Console;
+import games.bevs.library.commons.Console;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;

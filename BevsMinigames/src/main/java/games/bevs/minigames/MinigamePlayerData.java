@@ -1,9 +1,8 @@
 package games.bevs.minigames;
 
-import games.bevs.library.commons.utils.Rank;
+import games.bevs.library.commons.Rank;
 import games.bevs.library.modules.playerdata.types.PlayerData;
 import games.bevs.library.modules.playerdata.types.RankDuration;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.mongodb.morphia.annotations.Entity;
 

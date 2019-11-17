@@ -1,7 +1,7 @@
 package games.bevs.library.modules.playerdata.types;
 
 import com.google.common.collect.Lists;
-import games.bevs.library.commons.utils.Rank;
+import games.bevs.library.commons.Rank;
 import lombok.*;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;

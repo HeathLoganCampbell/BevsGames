@@ -1,4 +1,4 @@
-package games.bevs.library.commons.utils;
+package games.bevs.library.commons;
 
 import java.io.File;
 import java.io.IOException;

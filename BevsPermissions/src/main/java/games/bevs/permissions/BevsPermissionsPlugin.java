@@ -1,7 +1,6 @@
 package games.bevs.permissions;
 
-import games.bevs.library.commons.utils.CC;
-import games.bevs.library.commons.utils.Console;
+import games.bevs.library.commons.Console;
 import games.bevs.library.modules.configurable.ConfigManager;
 import games.bevs.library.modules.database.Database;
 import games.bevs.permissions.database.DatabaseConfig;
@@ -10,7 +9,6 @@ import games.bevs.permissions.types.Rank;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mongodb.morphia.dao.BasicDAO;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 

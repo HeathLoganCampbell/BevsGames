@@ -1,6 +1,6 @@
 package games.bevs.library.modules.playerdata.types;
 
-import games.bevs.library.commons.utils.Rank;
+import games.bevs.library.commons.Rank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
