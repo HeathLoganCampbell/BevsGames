@@ -5,6 +5,7 @@ import games.bevs.library.modules.configurable.ConfigManager;
 import games.bevs.library.modules.database.Database;
 import games.bevs.library.modules.database.DatabaseConfig;
 import games.bevs.library.modules.playerdata.PlayerDataHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mongodb.morphia.dao.BasicDAO;
 
@@ -24,6 +25,7 @@ public class BevsMinigamesPlugin extends JavaPlugin
         PlayerDataHandler playerDataHandler = new PlayerDataHandler<MinigamePlayerData>(this, MinigamePlayerData.class, database);
 
         database.done();
+
     }
 
     public Database handleDatabase()

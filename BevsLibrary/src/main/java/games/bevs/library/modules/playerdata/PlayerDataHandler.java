@@ -15,6 +15,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
+/**
+ * A
+ * @param <P>
+ */
 public class PlayerDataHandler<P extends PlayerData>
 {
     @Getter
