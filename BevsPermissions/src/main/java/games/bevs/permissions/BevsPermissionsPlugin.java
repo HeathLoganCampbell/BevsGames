@@ -23,11 +23,16 @@ public class BevsPermissionsPlugin extends JavaPlugin
 
         ConfigManager configManager = new ConfigManager(this, this,"games.bevs.permissions");
 
+        handleDatabase();
+    }
+
+    public void handleDatabase()
+    {
         Database database = new Database(this, DatabaseConfig.HOST,
-                                                      Integer.parseInt(DatabaseConfig.PORT),
-                                                      DatabaseConfig.USERNAME,
-                                                      DatabaseConfig.PASSWORD,
-                                                      DatabaseConfig.DATABASE);
+                Integer.parseInt(DatabaseConfig.PORT),
+                DatabaseConfig.USERNAME,
+                DatabaseConfig.PASSWORD,
+                DatabaseConfig.DATABASE);
         database.map(PlayerData.class);
         database.map(Rank.class);
         database.done();

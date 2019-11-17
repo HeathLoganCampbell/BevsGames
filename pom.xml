@@ -11,6 +11,8 @@
     <modules>
         <module>BevsPermissions</module>
         <module>BevsLibrary</module>
+        <module>BevsMinigames</module>
+        <module>BevsPlayerData</module>
     </modules>
 
     <properties>

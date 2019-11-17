@@ -5,5 +5,5 @@ package games.bevs.library.modules.display;
  */
 public class Display
 {
-
+    //
 }

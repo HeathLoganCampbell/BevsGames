@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>BevsPermissions</artifactId>
 
+    <artifactId>BevsMinigames</artifactId>
     <dependencies>
         <dependency>
             <groupId>games.bevs</groupId>
