@@ -10,6 +10,11 @@ public class PlayerDataManager<P extends PlayerData>
 {
     private HashMap<UUID, P> playerDatas;
 
+    public PlayerDataManager()
+    {
+        this.playerDatas = new HashMap<>();
+    }
+
     public void registerPlayerData(P playerData)
     {
         this.playerDatas.put(playerData.getUniqueId(), playerData);

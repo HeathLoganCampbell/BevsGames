@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mongodb.morphia.dao.BasicDAO;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
 public class PlayerDataHandler<P extends PlayerData>
@@ -19,21 +21,52 @@ public class PlayerDataHandler<P extends PlayerData>
     private Database database;
     private BasicDAO<P, UUID> daoAccessor;
 
+    private Class<P> clazz;
+    private Constructor<P> playerDataConstructor;
+
     public PlayerDataHandler(JavaPlugin plugin, Class<P> clazz, Database database)
     {
         this.playerDataManager = new PlayerDataManager<P>();
         this.database = database;
+        this.clazz = clazz;
 
         this.database.map(clazz);
-        this.daoAccessor = new BasicDAO<P, UUID>(clazz, this.database.getDatastore());
+
+        try {
+            this.playerDataConstructor = this.clazz.getConstructor(UUID.class);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
 
         Bukkit.getPluginManager().registerEvents(new PlayerDataListener(this), plugin);
     }
 
+    public BasicDAO<P, UUID> getDaoAccessor()
+    {
+        if(daoAccessor == null)
+            this.daoAccessor = new BasicDAO<P, UUID>(this.clazz, this.database.getDatastore());
+        return this.daoAccessor;
+    }
+
+    private P fetchPlayerData(String username, UUID uniqueId)
+    {
+        P playerData = this.getDaoAccessor().findOne("_id", uniqueId);
+        if (playerData == null)
+        {
+            try {
+                playerData = this.playerDataConstructor.newInstance(uniqueId);
+            } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            playerData.setUsername(username);
+            this.getDaoAccessor().save(playerData);
+        }
+        return playerData;
+    }
+
     public void connnect(String name, UUID uniqueId)
     {
-        P playerData = this.daoAccessor.get(uniqueId);;
-        //load from database
+        P playerData = this.fetchPlayerData(name, uniqueId);
         this.playerDataManager.registerPlayerData(playerData);
         playerData.setLoaded(true);
 
@@ -49,9 +82,13 @@ public class PlayerDataHandler<P extends PlayerData>
     public void disconnnect(String name, UUID uniqueId)
     {
         P playerData = this.playerDataManager.getPlayerData(uniqueId);
-
+        if(playerData == null)
+        {
+            Console.log("PlayerData", "Failed to save playerdata " + name + " as it was null");
+            return;
+        }
         //save from database;
-        this.daoAccessor.save(playerData);
+        this.getDaoAccessor().save(playerData);
         this.playerDataManager.unregisterPlayerData(uniqueId);
 
         Console.log("PlayerData", "Player " + name + " has disconnected");
