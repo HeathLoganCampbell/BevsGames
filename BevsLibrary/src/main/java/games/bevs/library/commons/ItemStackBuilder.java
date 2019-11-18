@@ -1,6 +1,6 @@
 package games.bevs.library.commons;
 
-import games.bevs.library.commons.utils.reflection.Reflection;
+import games.bevs.library.commons.reflection.Reflection;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;

@@ -22,23 +22,21 @@
  * SOFTWARE.
  */
 
-package games.bevs.library.commons.utils.reflection;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+package games.bevs.library.commons.reflection;
 
 /**
- * @since November 03, 2018
+ * @since October 31, 2018
  * @author Andavin
  */
-public class FieldMatcher extends AttributeMatcher<Field, FieldMatcher> {
+public interface ClassResolver {
 
-    public FieldMatcher(Class<?> type) {
-        super(type, Modifier.fieldModifiers());
-    }
-
-    @Override
-    boolean match(Field field) {
-        return this.match(field.getModifiers(), field.getType());
-    }
+    /**
+     * Get a specific fully-qualified class name from
+     * current stack trace at the given depth index.
+     *
+     * @param depth Position of stack trace element at which
+     *              to retrieve the class name.
+     * @return Fully-qualified class name from defined position
+     */
+    String resolve(int depth);
 }

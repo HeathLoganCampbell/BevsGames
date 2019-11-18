@@ -31,11 +31,18 @@ public abstract class PlayerManager<P> extends Manager<UUID, P> implements Liste
 	}
 	
 	public abstract P onPlayerCreation(UUID uniquieId, String username, InetAddress ipAddress);
+
+	/**
+	 *
+	 * @param playerObj
+	 * @return to remove from managers
+	 */
 	public abstract boolean onPlayerDestruction(P playerObj);
 	
 	public void registerPlayer(UUID uniquieId, String username, InetAddress ipAddress)
 	{
 		P playerObj = this.onPlayerCreation(uniquieId, username, ipAddress);
+		if(playerObj == null) return;
 		this.register(uniquieId, playerObj);
 	}
 	

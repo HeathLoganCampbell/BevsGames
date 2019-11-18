@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package games.bevs.library.commons.utils.reflection;
+package games.bevs.library.commons.reflection;
 
 
 import games.bevs.library.commons.Console;

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package games.bevs.library.commons.utils.reflection;
+package games.bevs.library.commons.reflection;
 
 
 import games.bevs.library.commons.Console;
@@ -30,7 +30,7 @@ import games.bevs.library.commons.Console;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import static games.bevs.library.commons.utils.reflection.Reflection.compare;
+import static games.bevs.library.commons.reflection.Reflection.compare;
 
 
 /**

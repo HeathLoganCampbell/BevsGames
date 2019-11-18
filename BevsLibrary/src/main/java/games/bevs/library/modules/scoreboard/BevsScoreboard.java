@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 import games.bevs.library.commons.utils.PacketUtils;
-import games.bevs.library.commons.utils.reflection.Reflection;
+import games.bevs.library.commons.reflection.Reflection;
 import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardTeam;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -2,6 +2,7 @@ package games.bevs.library.modules.playerdata;
 
 
 import games.bevs.library.modules.playerdata.types.PlayerData;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -28,5 +29,10 @@ public class PlayerDataManager<P extends PlayerData>
     public P getPlayerData(UUID uniqueId)
     {
         return this.playerDatas.get(uniqueId);
+    }
+
+    public P getPlayerData(Player player)
+    {
+        return this.playerDatas.get(player.getUniqueId());
     }
 }
