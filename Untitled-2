@@ -1,0 +1,10 @@
+mvn install:install-file \
+   -Dfile=libs/PermissionsEx-1.23.1.jar \
+   -DgroupId=ru.tehkode \
+   -DartifactId=PermissionsEx \
+   -Dversion=2.16.0.16 \
+   -Dpackaging=jar \
+   -DgeneratePom=true
+
+
+EssentialsXChat-2.16.0.16.jar

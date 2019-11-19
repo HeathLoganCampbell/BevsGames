@@ -226,7 +226,7 @@ public final class Reflection {
             value = (T) field.get(instance);
             // For now catch the ClassCastException
         } catch (ClassCastException | IllegalAccessException e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
 
         return value;
