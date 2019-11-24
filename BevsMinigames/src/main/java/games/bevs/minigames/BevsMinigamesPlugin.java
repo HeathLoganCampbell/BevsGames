@@ -8,6 +8,9 @@ import games.bevs.library.modules.database.Database;
 import games.bevs.library.modules.database.DatabaseConfig;
 import games.bevs.library.modules.invisibility.Invisibility;
 import games.bevs.library.modules.playerdata.PlayerDataHandler;
+import games.bevs.library.modules.sponge.SpongeModule;
+import games.bevs.library.modules.sponge.SpongeSettings;
+import games.bevs.library.modules.sponge.types.LauncherType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BevsMinigamesPlugin extends JavaPlugin
@@ -26,6 +29,10 @@ public class BevsMinigamesPlugin extends JavaPlugin
 
         Invisibility invModule = new Invisibility(this, playerDataHandler.getPlayerDataManager());
         AdminMode adminMode = new AdminMode(this, invModule);
+
+        SpongeSettings spongeSettings = new SpongeSettings();
+        spongeSettings.setLauncherType(LauncherType.CLASSIC);
+        SpongeModule spongeModule = new SpongeModule(this, spongeSettings);
 
         playerDataHandler.onCommands(commandFramework);
         invModule.onCommands(commandFramework);

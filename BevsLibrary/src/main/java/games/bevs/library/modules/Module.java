@@ -19,10 +19,21 @@ public class Module
         this.plugin = plugin;
     }
 
+    public void onEnable()
+    {
+
+    }
+
+    public void onDisable()
+    {
+
+    }
+
     public void registerListener(Listener listener)
     {
         PluginUtils.registerListener(listener, this.plugin);
     }
+
 
     public void log(String message)
     {
