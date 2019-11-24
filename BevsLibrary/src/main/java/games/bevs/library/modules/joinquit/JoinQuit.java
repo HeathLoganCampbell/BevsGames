@@ -1,7 +1,8 @@
 package games.bevs.library.modules.joinquit;
 
 import com.google.common.collect.Lists;
-import games.bevs.library.commons.utils.Callback;
+import games.bevs.library.commons.Callback;
+import games.bevs.library.modules.Module;
 import games.bevs.library.modules.joinquit.listener.JoinQuitListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -10,13 +11,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 
 
-public class JoinQuit
+public class JoinQuit extends Module
 {
     private List<Callback<Player>> joinRunnables
                                  , quitRunnables;
 
     public JoinQuit(JavaPlugin plugin)
     {
+        super("JoinQuit", plugin);
         this.joinRunnables = Lists.newLinkedList();
         this.quitRunnables = Lists.newLinkedList();
 

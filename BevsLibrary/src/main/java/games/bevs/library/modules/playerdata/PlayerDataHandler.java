@@ -1,11 +1,17 @@
 package games.bevs.library.modules.playerdata;
 
+import games.bevs.library.commons.Callback;
 import games.bevs.library.commons.Console;
+import games.bevs.library.commons.utils.mojang.MojangUtil;
+import games.bevs.library.modules.Module;
+import games.bevs.library.modules.commands.CommandFramework;
 import games.bevs.library.modules.database.Database;
+import games.bevs.library.modules.playerdata.commands.RankCommands;
 import games.bevs.library.modules.playerdata.listeners.PlayerDataListener;
 import games.bevs.library.modules.playerdata.types.PlayerData;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mongodb.morphia.dao.BasicDAO;
 
@@ -17,7 +23,7 @@ import java.util.UUID;
  * A
  * @param <P>
  */
-public class PlayerDataHandler<P extends PlayerData>
+public class PlayerDataHandler<P extends PlayerData> extends Module
 {
     @Getter
     private PlayerDataManager<P> playerDataManager;
@@ -29,6 +35,7 @@ public class PlayerDataHandler<P extends PlayerData>
 
     public PlayerDataHandler(JavaPlugin plugin, Class<P> clazz, Database database)
     {
+        super("PlayerData", plugin);
         this.playerDataManager = new PlayerDataManager<P>();
         this.database = database;
         this.clazz = clazz;
@@ -42,6 +49,12 @@ public class PlayerDataHandler<P extends PlayerData>
         }
 
         Bukkit.getPluginManager().registerEvents(new PlayerDataListener(this), plugin);
+    }
+
+    @Override
+    public void onCommands(CommandFramework commandFramework)
+    {
+        commandFramework.registerCommands(new RankCommands(this));
     }
 
     public BasicDAO<P, UUID> getDaoAccessor()
@@ -61,10 +74,46 @@ public class PlayerDataHandler<P extends PlayerData>
             } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
                 e.printStackTrace();
             }
-            playerData.setUsername(username);
+            if(username != null)
+                playerData.setUsername(username);
             this.getDaoAccessor().save(playerData);
         }
         return playerData;
+    }
+
+    /**
+     * Loads player uuid from a username,
+     * if it's loaded into ram, we'll just use that for quick access
+     * @param username
+     * @param callback
+     */
+    public void asyncFetchPlayerData(String username, Callback<P> callback)
+    {
+        new Thread(() -> {
+            UUID uniqueId = null;
+            try {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(username);
+                if(offlinePlayer == null) uniqueId = offlinePlayer.getUniqueId();
+                if(uniqueId == null) uniqueId = MojangUtil.getPartialProfile(username)[0].getUUID();
+                P playerData = null;
+                if(offlinePlayer.isOnline())
+                {
+                    playerData = this.playerDataManager.getPlayerData(uniqueId);
+                }
+                else {
+                    playerData = fetchPlayerData(username, uniqueId);
+                }
+
+                callback.done(playerData);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    public void save(P playerData)
+    {
+        this.getDaoAccessor().save(playerData);
     }
 
     public void connnect(String name, UUID uniqueId)

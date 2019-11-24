@@ -5,6 +5,8 @@ import games.bevs.library.modules.protocol.api.NMSObject;
 import games.bevs.library.modules.protocol.api.ProtocolVersion;
 import games.bevs.library.modules.protocol.packet.in.*;
 import games.bevs.library.modules.protocol.packet.out.*;
+import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayInFlying;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,6 +47,7 @@ public class TinyProtocolHandler {
 		if (receiver == null) return packet;
 
 		boolean cancel = false;
+		Class<?> packetClazz = packet.getClass();
 		String name = packet.getClass().getName();
 		int index = name.lastIndexOf(".");
 		String packetName = name.substring(index + 1);
@@ -59,57 +62,63 @@ public class TinyProtocolHandler {
 				protocolVersions.put(receiver, playerProtocolVersion);
 			}
 
-			switch (packetName) {
-				case NMSObject.Server.KEEP_ALIVE: {
-					WrappedOutKeepAlivePacket wrapped = new WrappedOutKeepAlivePacket(packet);
-					wrapped.process(receiver, playerProtocolVersion);
-//					data.fireChecks(wrapped);
-					cancel = wrapped.isCancelled();
-					break;
-				}
-				case NMSObject.Server.ENTITY_VELOCITY: {
-					WrappedOutVelocityPacket wrapped = new WrappedOutVelocityPacket(packet);
-					wrapped.process(receiver, playerProtocolVersion);
-//					if (wrapped.getId() == receiver.getEntityId())
-//						data.fireChecks(wrapped);
-					cancel = wrapped.isCancelled();
-					break;
-				}
-//				case NMSObject.Server.POSITION: {
-//					WrappedOutPositionPacket wrapped = new WrappedOutPositionPacket(packet);
+			if (PacketPlayInFlying.class == packetClazz)
+			{
+				//.. Wrap
+			} else {
+				throw new IllegalStateException("Unexpected value: " + packetClazz);
+			}
+
+//				case NMSObject.Server.KEEP_ALIVE: {
+//					WrappedOutKeepAlivePacket wrapped = new WrappedOutKeepAlivePacket(packet);
 //					wrapped.process(receiver, playerProtocolVersion);
-//					data.fireChecks(wrapped);
+////					data.fireChecks(wrapped);
 //					cancel = wrapped.isCancelled();
 //					break;
 //				}
-				case NMSObject.Server.GAME_STATE: {
-					WrappedOutGameState wrapped = new WrappedOutGameState(packet);
-					wrapped.process(receiver, playerProtocolVersion);
-//					data.fireChecks(wrapped);
-//					data.gamemode = GameMode.getByValue((int) wrapped.getValue());
-					cancel = wrapped.isCancelled();
-					break;
-				}
-				case NMSObject.Server.ENTITY_TELEPORT: {
-					WrappedOutEntityTeleport wrapped = new WrappedOutEntityTeleport(packet);
-//					for (HumanNPC npc : data.npc.npcs) {
-//						npc.teleportEntity(data, wrapped);
-//					}
-					break;
-				}
-				case NMSObject.Server.REL_LOOK:
-				case NMSObject.Server.REL_POSITION:
-				case NMSObject.Server.REL_POSITION_LOOK:
-				case NMSObject.Server.LEGACY_REL_LOOK:
-				case NMSObject.Server.LEGACY_REL_POSITION:
-//				case NMSObject.Server.LEGACY_REL_POSITION_LOOK: {
-//					WrappedOutRelativePosition wrapped = new WrappedOutRelativePosition(packet);
-//					for (HumanNPC npc : data.npc.npcs) {
-//						npc.moveEntity(data, wrapped);
-//					}
+//				case NMSObject.Server.ENTITY_VELOCITY: {
+//					WrappedOutVelocityPacket wrapped = new WrappedOutVelocityPacket(packet);
+//					wrapped.process(receiver, playerProtocolVersion);
+////					if (wrapped.getId() == receiver.getEntityId())
+////						data.fireChecks(wrapped);
+//					cancel = wrapped.isCancelled();
 //					break;
 //				}
-			}
+////				case NMSObject.Server.POSITION: {
+////					WrappedOutPositionPacket wrapped = new WrappedOutPositionPacket(packet);
+////					wrapped.process(receiver, playerProtocolVersion);
+////					data.fireChecks(wrapped);
+////					cancel = wrapped.isCancelled();
+////					break;
+////				}
+//				case NMSObject.Server.GAME_STATE: {
+//					WrappedOutGameState wrapped = new WrappedOutGameState(packet);
+//					wrapped.process(receiver, playerProtocolVersion);
+////					data.fireChecks(wrapped);
+////					data.gamemode = GameMode.getByValue((int) wrapped.getValue());
+//					cancel = wrapped.isCancelled();
+//					break;
+//				}
+//				case NMSObject.Server.ENTITY_TELEPORT: {
+//					WrappedOutEntityTeleport wrapped = new WrappedOutEntityTeleport(packet);
+////					for (HumanNPC npc : data.npc.npcs) {
+////						npc.teleportEntity(data, wrapped);
+////					}
+//					break;
+//				}
+//				case NMSObject.Server.REL_LOOK:
+//				case NMSObject.Server.REL_POSITION:
+//				case NMSObject.Server.REL_POSITION_LOOK:
+//				case NMSObject.Server.LEGACY_REL_LOOK:
+//				case NMSObject.Server.LEGACY_REL_POSITION:
+////				case NMSObject.Server.LEGACY_REL_POSITION_LOOK: {
+////					WrappedOutRelativePosition wrapped = new WrappedOutRelativePosition(packet);
+////					for (HumanNPC npc : data.npc.npcs) {
+////						npc.moveEntity(data, wrapped);
+////					}
+////					break;
+////				}
+//			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

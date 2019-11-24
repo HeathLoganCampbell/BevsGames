@@ -1,6 +1,7 @@
 package games.bevs.minigames;
 
 import games.bevs.library.commons.Console;
+import games.bevs.library.modules.commands.CommandFramework;
 import games.bevs.library.modules.configurable.ConfigManager;
 import games.bevs.library.modules.database.Database;
 import games.bevs.library.modules.database.DatabaseConfig;
@@ -19,9 +20,10 @@ public class BevsMinigamesPlugin extends JavaPlugin
         Database database = handleDatabase();
 
         PlayerDataHandler playerDataHandler = new PlayerDataHandler<MinigamePlayerData>(this, MinigamePlayerData.class, database);
+        CommandFramework commandFramework = new CommandFramework(this, playerDataHandler);
+
 
         database.done();
-
     }
 
     public Database handleDatabase()

@@ -38,4 +38,9 @@ public class PlayerData
         this.rank = rank;
         this.rankHistory = rankHistory;
     }
+
+    public void setRank(Rank rank)
+    {
+        this.rank = rank;
+    }
 }
