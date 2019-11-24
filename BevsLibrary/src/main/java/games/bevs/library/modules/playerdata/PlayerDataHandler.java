@@ -96,11 +96,15 @@ public class PlayerDataHandler<P extends PlayerData> extends Module
                 if(offlinePlayer == null) uniqueId = offlinePlayer.getUniqueId();
                 if(uniqueId == null) uniqueId = MojangUtil.getPartialProfile(username)[0].getUUID();
                 P playerData = null;
+                Console.log("asyncFetchPlayerData", "uuid: " + uniqueId);
                 if(offlinePlayer.isOnline())
                 {
+                    Console.log("asyncFetchPlayerData", "Player in online, so lets get it from memory");
                     playerData = this.playerDataManager.getPlayerData(uniqueId);
+                    Console.log("asyncFetchPlayerData", "Value collected from database " + playerData);
                 }
                 else {
+                    Console.log("asyncFetchPlayerData", "Player in offline, so lets get it from database");
                     playerData = fetchPlayerData(username, uniqueId);
                 }
 
@@ -119,6 +123,7 @@ public class PlayerDataHandler<P extends PlayerData> extends Module
     public void connnect(String name, UUID uniqueId)
     {
         P playerData = this.fetchPlayerData(name, uniqueId);
+        playerData.handleExpireRanks();
         this.playerDataManager.registerPlayerData(playerData);
         playerData.setLoaded(true);
 

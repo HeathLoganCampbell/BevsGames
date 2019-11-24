@@ -2,6 +2,11 @@ package games.bevs.library.modules.adminmode;
 
 import games.bevs.library.commons.CC;
 import games.bevs.library.commons.Rank;
+import games.bevs.library.commons.utils.PluginUtils;
+import games.bevs.library.modules.Module;
+import games.bevs.library.modules.adminmode.commands.AdminModeCommand;
+import games.bevs.library.modules.adminmode.listeners.PlayerListener;
+import games.bevs.library.modules.commands.CommandFramework;
 import games.bevs.library.modules.invisibility.Invisibility;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -10,16 +15,30 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashSet;
 import java.util.UUID;
 
-public class AdminMode
+public class AdminMode extends Module
 {
     private JavaPlugin plugin;
     private Invisibility invisibility;
-    private HashSet<UUID> adminModePlayers;
+    private HashSet<UUID> adminModePlayers = new HashSet<>();
 
     public AdminMode(JavaPlugin plugin, Invisibility invisibility)
     {
-        this.plugin = plugin;
+        super("AdminMode", plugin);
         this.invisibility = invisibility;
+
+        this.registerListener(new PlayerListener(this));
+    }
+
+    @Override
+    public void onCommands(CommandFramework commandFramework)
+    {
+        commandFramework.registerCommands(new AdminModeCommand(this));
+    }
+
+    public void onDisconnected(Player player)
+    {
+        if(this.inAdminMode(player))
+            this.adminModePlayers.remove(player.getUniqueId());
     }
 
     public boolean inAdminMode(Player player)

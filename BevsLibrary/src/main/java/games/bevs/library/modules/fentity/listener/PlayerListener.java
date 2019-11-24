@@ -17,6 +17,6 @@ public class PlayerListener implements Listener
     public void onBlockBreak(BlockBreakEvent e)
     {
         Player player = e.getPlayer();
-        this.entityEngine.spawnFor(player);
+//        this.entityEngine.spawnFor(player);
     }
 }

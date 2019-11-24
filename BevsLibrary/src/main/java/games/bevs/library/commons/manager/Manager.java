@@ -11,7 +11,7 @@ public class Manager<K, V>
 		this.entities = new HashMap<>();
 	}
 	
-	protected void register(K k, V v)
+	public void register(K k, V v)
 	{
 		this.entities.put(k, v);
 	}
@@ -21,7 +21,7 @@ public class Manager<K, V>
 		return this.entities.get(k);
 	}
 	
-	protected void unregister(K k)
+	public void unregister(K k)
 	{
 		this.entities.remove(k);
 	}

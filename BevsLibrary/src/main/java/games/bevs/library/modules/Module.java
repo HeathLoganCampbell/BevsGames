@@ -1,6 +1,8 @@
 package games.bevs.library.modules;
 
+import games.bevs.library.commons.utils.PluginUtils;
 import games.bevs.library.modules.commands.CommandFramework;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Module
@@ -12,6 +14,11 @@ public class Module
     {
         this.name = name;
         this.plugin = plugin;
+    }
+
+    public void registerListener(Listener listener)
+    {
+        PluginUtils.registerListener(listener, this.plugin);
     }
 
     /**

@@ -1,6 +1,7 @@
 package games.bevs.library.modules.playerdata.commands;
 
 import games.bevs.library.commons.CC;
+import games.bevs.library.commons.Console;
 import games.bevs.library.commons.Duration;
 import games.bevs.library.commons.Rank;
 import games.bevs.library.modules.commands.Command;
@@ -38,7 +39,7 @@ public class RankCommands<P extends PlayerData>
         CommandSender sender = args.getSender(); //Should only be the cosnole
         Duration duration = new Duration(100000, Duration.TimeUnit.YEAR);
 
-        if(args.length() <= 2)
+        if(args.length() < 2)
         {
             sender.sendMessage(CC.red + "Please give a player and a rank");
             return;
@@ -46,7 +47,7 @@ public class RankCommands<P extends PlayerData>
 
         final String playerName = args.getArgs(0);
         final String rankStr = args.getArgs(1);
-        final String durationStr = args.getArgs(2);
+
 
         final Rank rank = Rank.toRank(rankStr);
         if(rank == null)
@@ -55,14 +56,19 @@ public class RankCommands<P extends PlayerData>
             return;
         }
 
-        if(args.length() == 3)
+        if(args.length() == 3) {
+            String durationStr = args.getArgs(2);
             duration = new Duration(durationStr);
+        }
         duration = duration.withNow();
         final Duration finalDuration = duration;
 
 
-        sender.sendMessage(CC.aqua + "Loading...");
+        sender.sendMessage(CC.aqua + "Loading " + playerName +"'s PlayerData...");
         playerDataHandler.asyncFetchPlayerData(playerName, (playerdata) -> {
+            Console.log("Yeet", playerdata + "");
+            Console.log("Yeet", playerdata.getRank().toString());
+            Console.log("Yeet", rank.name());
             if(!playerdata.getRank().hasPermissionsOf(rank))
             {
                 sender.sendMessage(CC.red + "You cannot demote a player by promoting them");
@@ -88,7 +94,7 @@ public class RankCommands<P extends PlayerData>
     {
         CommandSender sender = args.getSender(); //Should only be the cosnole
 
-        if(args.length() <= 2)
+        if(args.length() < 2)
         {
             sender.sendMessage(CC.red + "Please give a player and a rank");
             return;
@@ -132,7 +138,7 @@ public class RankCommands<P extends PlayerData>
         CommandSender sender = args.getSender(); //Should only be the cosnole
         Duration duration = new Duration(100000, Duration.TimeUnit.YEAR);
 
-        if(args.length() <= 2)
+        if(args.length() < 2)
         {
             sender.sendMessage(CC.red + "Please give a player and a rank");
             return;
@@ -140,7 +146,7 @@ public class RankCommands<P extends PlayerData>
 
         final String playerName = args.getArgs(0);
         final String rankStr = args.getArgs(1);
-        final String durationStr = args.getArgs(2);
+
 
         final Rank rank = Rank.toRank(rankStr);
         if(rank == null)
@@ -149,14 +155,21 @@ public class RankCommands<P extends PlayerData>
             return;
         }
 
-        if(args.length() == 3)
+        if(args.length() == 3) {
+            final String durationStr = args.getArgs(2);
             duration = new Duration(durationStr);
+        }
         duration = duration.withNow();
         final Duration finalDuration = duration;
 
 
         sender.sendMessage(CC.aqua + "Loading...");
         playerDataHandler.asyncFetchPlayerData(playerName, (playerdata) -> {
+            if(playerdata == null)
+            {
+                sender.sendMessage(CC.red + "FAILURE 0x142E, Failed to load playerdata correctly");
+                return;
+            }
             playerdata.setRank(rank);
             playerDataHandler.save(playerdata);
             sender.sendMessage(CC.green + "Player rank is now set to " + rank.getDisplayName() + " for " + finalDuration.getFormatedTime());

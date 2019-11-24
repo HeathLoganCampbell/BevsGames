@@ -13,6 +13,7 @@ import java.util.TreeSet;
 
 import games.bevs.library.commons.CC;
 import games.bevs.library.modules.playerdata.PlayerDataHandler;
+import games.bevs.library.modules.playerdata.types.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
@@ -98,6 +99,17 @@ public class CommandFramework implements CommandExecutor {
 					sender.sendMessage(command.noPerm());
 					return true;
 				}
+
+				if(this.playerDataHandler != null && (sender instanceof Player))
+				{
+					PlayerData playerData = this.playerDataHandler.getPlayerDataManager().getPlayerData(((Player) sender).getUniqueId());
+					if(!playerData.getRank().hasPermissionsOf(command.requireRank()))
+					{
+						sender.sendMessage(CC.red + "You need the rank " + command.requireRank().getColouredDisplayName() + " to do this command!");
+						return true;
+					}
+				}
+
 				if (command.playerOnly() && !(sender instanceof Player)) {
 					sender.sendMessage(CC.red +"This command is only performable in game");
 					return true;

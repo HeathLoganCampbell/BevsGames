@@ -28,6 +28,9 @@ public class PlayerDataManager<P extends PlayerData>
 
     public P getPlayerData(UUID uniqueId)
     {
+        this.playerDatas.forEach((key, value) -> {
+            System.out.println(">>>> " + key + " : " + value);
+        });
         return this.playerDatas.get(uniqueId);
     }
 
