@@ -1,5 +1,6 @@
 package games.bevs.library.modules.playerdata;
 
+import games.bevs.library.commons.CC;
 import games.bevs.library.commons.Callback;
 import games.bevs.library.commons.Console;
 import games.bevs.library.commons.utils.mojang.MojangUtil;
@@ -12,6 +13,7 @@ import games.bevs.library.modules.playerdata.types.PlayerData;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mongodb.morphia.dao.BasicDAO;
 
@@ -49,6 +51,22 @@ public class PlayerDataHandler<P extends PlayerData> extends Module
         }
 
         Bukkit.getPluginManager().registerEvents(new PlayerDataListener(this), plugin);
+
+
+        loadPlayeDataOfOnlinePlayers();
+    }
+
+    /**
+     * Loads in all the player data for the online players,
+     * so they don't have to reconnect
+     */
+    private void loadPlayeDataOfOnlinePlayers()
+    {
+
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+           this.connnect(onlinePlayer.getName(), onlinePlayer.getUniqueId());
+        }
+        Bukkit.broadcastMessage(CC.green + "Reloading playerdata");
     }
 
     @Override
