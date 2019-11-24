@@ -6,6 +6,7 @@ import games.bevs.library.modules.commands.CommandFramework;
 import games.bevs.library.modules.configurable.ConfigManager;
 import games.bevs.library.modules.database.Database;
 import games.bevs.library.modules.database.DatabaseConfig;
+import games.bevs.library.modules.essentials.EssentialsModule;
 import games.bevs.library.modules.invisibility.Invisibility;
 import games.bevs.library.modules.playerdata.PlayerDataHandler;
 import games.bevs.library.modules.sponge.SpongeModule;
@@ -29,6 +30,7 @@ public class BevsMinigamesPlugin extends JavaPlugin
 
         Invisibility invModule = new Invisibility(this, playerDataHandler.getPlayerDataManager());
         AdminMode adminMode = new AdminMode(this, invModule);
+        EssentialsModule essentials = new EssentialsModule(this);
 
         SpongeSettings spongeSettings = new SpongeSettings();
         spongeSettings.setLauncherType(LauncherType.CLASSIC);
@@ -37,8 +39,10 @@ public class BevsMinigamesPlugin extends JavaPlugin
         playerDataHandler.onCommands(commandFramework);
         invModule.onCommands(commandFramework);
         adminMode.onCommands(commandFramework);
+        essentials.onCommands(commandFramework);
 
         database.done();
+        playerDataHandler.loadActivePlayerData();
     }
 
     public Database handleDatabase()

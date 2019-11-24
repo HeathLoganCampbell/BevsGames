@@ -1,10 +1,14 @@
 package games.bevs.library.modules.essentials;
 
 
+import com.google.gson.internal.Streams;
 import games.bevs.library.commons.utils.ClassGetterUtils;
 import games.bevs.library.modules.Module;
 import games.bevs.library.modules.commands.CommandFramework;
+import games.bevs.library.modules.essentials.commands.*;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.stream.Stream;
 
 /**
  * Essentials commands
@@ -18,19 +22,15 @@ public class EssentialsModule extends Module
 	/**
 	 * Reigster all class
 	 */
+	@Override
 	public void onCommands(CommandFramework commandFramework)
 	{
-		ClassGetterUtils.getClassesForPackage(this.getPlugin(), "games.bevs.library.modules.essentials").forEach(clazz -> {
-			try {
-				
-				Object obj = clazz.newInstance();
-				commandFramework.registerCommands(obj);
-				this.log("Loaded command " + clazz.getSimpleName());
-
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				 | SecurityException e) {
-				e.printStackTrace();
-			}
-		});
+		Stream.of(new ButcherCommand(),
+				 new FeedCommand(),
+				 new FlyCommand(),
+				 new HealCommand(),
+				 new InvSeeCommand(),
+				new PingCommand()).forEach(
+						commandFramework::registerCommands);
 	}
 }

@@ -51,16 +51,13 @@ public class PlayerDataHandler<P extends PlayerData> extends Module
         }
 
         Bukkit.getPluginManager().registerEvents(new PlayerDataListener(this), plugin);
-
-
-        loadPlayeDataOfOnlinePlayers();
     }
 
     /**
      * Loads in all the player data for the online players,
      * so they don't have to reconnect
      */
-    private void loadPlayeDataOfOnlinePlayers()
+    public void loadActivePlayerData()
     {
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
