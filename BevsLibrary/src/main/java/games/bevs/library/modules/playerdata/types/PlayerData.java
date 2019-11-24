@@ -71,8 +71,9 @@ public class PlayerData
         Player player = this.getPlayer();
         if(player != null)
         {
+            player.setDisplayName(this.getRank().getTagColor() + player.getName());
+            player.setPlayerListName(player.getDisplayName());
             player.sendMessage(CC.gray + "You are now " + this.rank.getTagColor() + this.rank.getDisplayName() + CC.gray + "!");
-            player.setPlayerListName(this.getRank().getTagColor() + player.getName());
         }
     }
 

@@ -50,11 +50,11 @@ public class AdminMode extends Module
     {
         boolean inAdmin = this.inAdminMode(player);
 
-        if(inAdmin)
+        if(!inAdmin)
         {
             this.invisibility.setInvisibleTo(player, Rank.MOD);
             player.setGameMode(GameMode.CREATIVE);
-            this.adminModePlayers.remove(player.getUniqueId());
+            this.adminModePlayers.add(player.getUniqueId());
         }
         else
         {

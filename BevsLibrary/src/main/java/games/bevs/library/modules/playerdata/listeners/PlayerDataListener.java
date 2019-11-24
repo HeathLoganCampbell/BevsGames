@@ -37,7 +37,8 @@ public class PlayerDataListener<P extends PlayerData> implements Listener
 
         if(playerdata != null && playerdata.isLoaded())
         {
-            player.setPlayerListName(playerdata.getRank().getTagColor() + player.getName());
+            player.setDisplayName(playerdata.getRank().getTagColor() + player.getName());
+            player.setPlayerListName(player.getDisplayName());
             player.sendMessage(CC.gray + "Welcome, you're a " + playerdata.getRank().getColouredDisplayName());
             return;
         }
