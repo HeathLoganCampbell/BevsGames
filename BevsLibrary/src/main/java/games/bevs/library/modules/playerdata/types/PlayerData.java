@@ -1,9 +1,12 @@
 package games.bevs.library.modules.playerdata.types;
 
 import com.google.common.collect.Lists;
+import games.bevs.library.commons.CC;
 import games.bevs.library.commons.Duration;
 import games.bevs.library.commons.Rank;
 import lombok.*;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
@@ -41,6 +44,11 @@ public class PlayerData
         this.rankHistory = rankHistory;
     }
 
+    public Player getPlayer()
+    {
+        return Bukkit.getPlayer(this.getUniqueId());
+    }
+
     /**
      * Apply a new rank to the player,
      * all ranks greater than this rank will be overwritten
@@ -49,10 +57,23 @@ public class PlayerData
      */
     public void setRank(Rank rank, Duration duration)
     {
+        this.invalidUpperRanks(rank);
         this.rankHistory.add(new RankDuration(rank, System.currentTimeMillis(), duration.getMillis(), true));
         this.rankExpires = duration.getMillis();
         this.rank = rank;
-        this.invalidUpperRanks(this.rank);
+        notifyRankUpdate();
+    }
+
+
+
+    private void notifyRankUpdate()
+    {
+        Player player = this.getPlayer();
+        if(player != null)
+        {
+            player.sendMessage(CC.gray + "You are now " + this.rank.getTagColor() + this.rank.getDisplayName() + CC.gray + "!");
+            player.setPlayerListName(this.getRank().getTagColor() + player.getName());
+        }
     }
 
     /**
@@ -92,6 +113,7 @@ public class PlayerData
 
         this.rank = bestRank;
         this.rankExpires = expires;
+        notifyRankUpdate();
         //updated rank
     }
 

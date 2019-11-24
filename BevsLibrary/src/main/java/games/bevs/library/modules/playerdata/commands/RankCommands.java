@@ -24,17 +24,7 @@ public class RankCommands<P extends PlayerData>
 {
     private PlayerDataHandler<P> playerDataHandler;
 
-    /**
-     * Promotes a players rank,
-     * only accessible via console
-     * @param args
-     */
-    @Command(name = "playerdata.rank.promote",
-             description = "if rank is higher than their current rank, it'll upgrade their rank",
-             usage = "/playerdata rank promote [player] [Rank]",
-             consoleOnly = true
-            )
-    public void onForceCommand(CommandArgs args)
+    public void applyRank(CommandArgs args, boolean forced, boolean promote)
     {
         CommandSender sender = args.getSender(); //Should only be the cosnole
         Duration duration = new Duration(100000, Duration.TimeUnit.YEAR);
@@ -66,18 +56,42 @@ public class RankCommands<P extends PlayerData>
 
         sender.sendMessage(CC.aqua + "Loading " + playerName +"'s PlayerData...");
         playerDataHandler.asyncFetchPlayerData(playerName, (playerdata) -> {
-            Console.log("Yeet", playerdata + "");
-            Console.log("Yeet", playerdata.getRank().toString());
-            Console.log("Yeet", rank.name());
-            if(!playerdata.getRank().hasPermissionsOf(rank))
-            {
-                sender.sendMessage(CC.red + "You cannot demote a player by promoting them");
-                return;
+            if (!forced) {
+                if(promote) {
+                    if (!playerdata.getRank().hasPermissionsOf(rank)) {
+                        sender.sendMessage(CC.red + "You cannot demote a player by promoting them");
+                        return;
+                    }
+                }
+                else
+                {
+                    if(playerdata.getRank().hasPermissionsOf(rank))
+                    {
+                        sender.sendMessage(CC.red + "The player canot be promoted via demote!");
+                        return;
+                    }
+                }
             }
-            playerdata.setRank(rank);
+            playerdata.setRank(rank, finalDuration);
             playerDataHandler.save(playerdata);
             sender.sendMessage(CC.green + "Player rank is now set to " + rank.getDisplayName() + " for " + finalDuration.getFormatedTime());
         });
+    }
+
+
+    /**
+     * Promotes a players rank,
+     * only accessible via console
+     * @param args
+     */
+    @Command(name = "playerdata.rank.promote",
+             description = "if rank is higher than their current rank, it'll upgrade their rank",
+             usage = "/playerdata rank promote [player] [Rank]",
+             consoleOnly = true
+            )
+    public void onForceCommand(CommandArgs args)
+    {
+        applyRank(args, false, true);
     }
 
     /**
@@ -92,35 +106,7 @@ public class RankCommands<P extends PlayerData>
     )
     public void onDemoteCommand(CommandArgs args)
     {
-        CommandSender sender = args.getSender(); //Should only be the cosnole
-
-        if(args.length() < 2)
-        {
-            sender.sendMessage(CC.red + "Please give a player and a rank");
-            return;
-        }
-
-        final String playerName = args.getArgs(0);
-        final String rankStr = args.getArgs(1);
-
-        final Rank rank = Rank.toRank(rankStr);
-        if(rank == null)
-        {
-            sender.sendMessage(CC.red + "Unknown rank " + rankStr);
-            return;
-        }
-
-
-        sender.sendMessage(CC.aqua + "Loading...");
-        playerDataHandler.asyncFetchPlayerData(playerName, (playerdata) -> {
-            if(playerdata.getRank().hasPermissionsOf(rank))
-            {
-                sender.sendMessage(CC.red + "The player canot be promoted via demote!");
-                return;
-            }
-            playerdata.setRank(rank);
-            sender.sendMessage(CC.green + "Player rank is now set to " + rank.getDisplayName());
-        });
+       this.applyRank(args, false, false);
     }
 
     /**
@@ -135,44 +121,6 @@ public class RankCommands<P extends PlayerData>
     )
     public void onPromoteCommand(CommandArgs args)
     {
-        CommandSender sender = args.getSender(); //Should only be the cosnole
-        Duration duration = new Duration(100000, Duration.TimeUnit.YEAR);
-
-        if(args.length() < 2)
-        {
-            sender.sendMessage(CC.red + "Please give a player and a rank");
-            return;
-        }
-
-        final String playerName = args.getArgs(0);
-        final String rankStr = args.getArgs(1);
-
-
-        final Rank rank = Rank.toRank(rankStr);
-        if(rank == null)
-        {
-            sender.sendMessage(CC.red + "Unknown rank " + rankStr);
-            return;
-        }
-
-        if(args.length() == 3) {
-            final String durationStr = args.getArgs(2);
-            duration = new Duration(durationStr);
-        }
-        duration = duration.withNow();
-        final Duration finalDuration = duration;
-
-
-        sender.sendMessage(CC.aqua + "Loading...");
-        playerDataHandler.asyncFetchPlayerData(playerName, (playerdata) -> {
-            if(playerdata == null)
-            {
-                sender.sendMessage(CC.red + "FAILURE 0x142E, Failed to load playerdata correctly");
-                return;
-            }
-            playerdata.setRank(rank);
-            playerDataHandler.save(playerdata);
-            sender.sendMessage(CC.green + "Player rank is now set to " + rank.getDisplayName() + " for " + finalDuration.getFormatedTime());
-        });
+        applyRank(args, true, false);
     }
 }
