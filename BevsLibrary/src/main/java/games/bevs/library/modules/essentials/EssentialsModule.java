@@ -30,7 +30,7 @@ public class EssentialsModule extends Module
 				 new FlyCommand(),
 				 new HealCommand(),
 				 new InvSeeCommand(),
-				new PingCommand()).forEach(
+				 new PingCommand()).forEach(
 						commandFramework::registerCommands);
 	}
 }
