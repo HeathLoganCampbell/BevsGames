@@ -1,0 +1,4 @@
+name: ${project.artifactId}
+main: games.bevs.hub.BevsHubPlugin
+version: ${project.version}
+depend: [BevsLibrary]

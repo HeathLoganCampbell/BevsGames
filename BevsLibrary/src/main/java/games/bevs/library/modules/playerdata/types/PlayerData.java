@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import games.bevs.library.commons.CC;
 import games.bevs.library.commons.Duration;
 import games.bevs.library.commons.Rank;
+import games.bevs.library.modules.scoreboard.BevsScoreboard;
 import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -36,6 +37,9 @@ public class PlayerData
 
     @Transient @Setter
     private boolean loaded = false;
+
+    @Transient @Getter @Setter
+    private BevsScoreboard bevsScoreboard;
 
     public PlayerData(UUID uniqueId, String username, Rank rank, List<RankDuration> rankHistory) {
         this.uniqueId = uniqueId;

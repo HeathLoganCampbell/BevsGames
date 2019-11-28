@@ -57,7 +57,7 @@ public class RankCommands<P extends PlayerData>
         sender.sendMessage(CC.aqua + "Loading " + playerName +"'s PlayerData...");
         playerDataHandler.asyncFetchPlayerData(playerName, (playerdata) -> {
             if (!forced) {
-                if(promote) {
+                if(!promote) {
                     if (!playerdata.getRank().hasPermissionsOf(rank)) {
                         sender.sendMessage(CC.red + "You cannot demote a player by promoting them");
                         return;

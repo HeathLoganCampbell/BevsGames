@@ -9,10 +9,9 @@
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>
-        <module>BevsPermissions</module>
         <module>BevsLibrary</module>
         <module>BevsMinigames</module>
-        <module>BevsPlayerData</module>
+        <module>BevsHub</module>
     </modules>
 
     <properties>

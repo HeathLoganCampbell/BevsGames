@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -17,15 +18,16 @@ public class JoinQuitListener implements Listener
     @Getter(AccessLevel.PRIVATE)
     private JoinQuit joinQuit;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent e)
     {
         Player player = e.getPlayer();
+        if(player == null) return;
         this.joinQuit.join(player);
         e.setJoinMessage(null);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onQuit(PlayerQuitEvent e)
     {
         Player player = e.getPlayer();
