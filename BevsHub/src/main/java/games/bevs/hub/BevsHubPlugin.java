@@ -1,8 +1,12 @@
 package games.bevs.hub;
 
+import games.bevs.hub.listeners.ScoreboardListener;
 import games.bevs.library.commons.CC;
 import games.bevs.library.commons.Console;
+import games.bevs.library.commons.ItemStackBuilder;
 import games.bevs.library.commons.Scheduler;
+import games.bevs.library.commons.utils.PluginUtils;
+import games.bevs.library.commons.utils.TabUtils;
 import games.bevs.library.modules.adminmode.AdminMode;
 import games.bevs.library.modules.chat.ChatModule;
 import games.bevs.library.modules.chat.ChatSetting;
@@ -18,13 +22,28 @@ import games.bevs.library.modules.scoreboard.BevsScoreboard;
 import games.bevs.library.modules.sponge.SpongeModule;
 import games.bevs.library.modules.sponge.SpongeSettings;
 import games.bevs.library.modules.sponge.types.LauncherType;
+import games.bevs.library.modules.ticker.Ticker;
 import games.bevs.library.modules.worldoptions.WorldModule;
 import games.bevs.library.modules.worldoptions.WorldOptionSettings;
+import net.jitse.npclib.NPCLib;
+import net.jitse.npclib.api.NPC;
+import net.jitse.npclib.api.skin.MineSkinFetcher;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Arrays;
 
 
 public class BevsHubPlugin extends JavaPlugin
 {
+    private NPCLib npclib;
+
     @Override
     public void onEnable()
     {
@@ -50,6 +69,7 @@ public class BevsHubPlugin extends JavaPlugin
         adminMode.onCommands(commandFramework);
         essentials.onCommands(commandFramework);
 
+        ItemStack item = new ItemStackBuilder(Material.SIGN).displayName(CC.bYellow + "Coming soon...").build();
         JoinQuit joinQuit = new JoinQuit(this);
         joinQuit.addJoinRunnable((player) -> {
             Scheduler.later(() -> {
@@ -59,13 +79,21 @@ public class BevsHubPlugin extends JavaPlugin
                 scoreboard.open(player);
 
                 scoreboard.setTitle(CC.bYellow + "MC MONDAY");
-                int i = 0;
-                scoreboard.setLine(i++,  CC.white + CC.strikeThrough + "---------------------");
-//            scoreboard.setLine(i++,  CC.bAqua + "DISCORD: discord.compswhy.com");
-                scoreboard.setLine(i++,  CC.bAqua + "YOUTUBE: COMPSWHY");
-                scoreboard.setLine(i++,  CC.white + CC.strikeThrough + "---------------------");
-                scoreboard.setLine(i++,  CC.bGold + "COUNTDOWN");
-                scoreboard.setLine(i++,  CC.white + CC.strikeThrough + "---------------------");
+
+                PlayerInventory inv = player.getInventory();
+                inv.setItem(4, item);
+
+                TabUtils.sendTab(player, "\n" + CC.bYellow + "MC MONDAY\n", "\n" + CC.gray + "                  POWERED BY COMPSWHY                  " + "\n");
+
+                player.sendMessage(new String[] {
+                        CC.bYellow + "      MCMONDAY" + CC.gray + " powered by COMPSWHY",
+                        CC.white + CC.strikeThrough + "----------------------------------------",
+                        "",
+                        CC.bGreen + "  SUBSCRIBE: " + CC.gray + "http://youtube.compswhy.com",
+                        CC.bGreen + "  JOIN: " + CC.gray + "         http://discord.compswhy.com",
+                        "",
+                        CC.white + CC.strikeThrough + "----------------------------------------",
+                });
             }, 5l);
         });
 
@@ -74,10 +102,50 @@ public class BevsHubPlugin extends JavaPlugin
         WorldOptionSettings worldOptionSettings = new WorldOptionSettings();
         worldOptionSettings.setEnableWeather(false);
         worldOptionSettings.setEnableDecay(false);
+        worldOptionSettings.setEnableBlockBreak(false);
+        worldOptionSettings.setEnableBlockPlace(false);
+        worldOptionSettings.setEnableBlockInteraction(false);
+
+        worldOptionSettings.setEnableHunger(false);
+        worldOptionSettings.setEnablePlayerDamage(false);
+
+        worldOptionSettings.setEnableDropItems(false);
+        worldOptionSettings.setEnablePickUpItems(false);
         WorldModule worldModule = new WorldModule(this, worldOptionSettings);
+
+        Ticker ticker = new Ticker(this);
 
         database.done();
         playerDataHandler.loadActivePlayerData();
+
+        PluginUtils.registerListener(new ScoreboardListener(playerDataHandler), this);
+
+        spawnNPCs(joinQuit);
+    }
+
+    private void spawnNPCs( JoinQuit joinQuit ){
+        this.npclib = new NPCLib(this);
+
+        final Location loc = new Location(Bukkit.getWorlds().get(0), -151.5D, 136.0D, 223.5D);
+
+        //1982119160 https://mineskin.org/1982119160
+        MineSkinFetcher.fetchSkinFromIdAsync(188100, skin -> {
+            NPC npc = npclib.createNPC(Arrays.asList(CC.bYellow + "MC Monday", CC.gray + "Powered by COMPSWHY"));
+            Bukkit.broadcastMessage(" vvvvv" + "");
+            Bukkit.broadcastMessage(npc + "");
+            npc.setLocation(loc);
+            npc.setSkin(skin);
+            npc.create();
+            // The SkinFetcher fetches the skin async, you can only show the NPC to the player sync.
+            Bukkit.getScheduler().runTask(this, () -> {
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    npc.show(onlinePlayer);
+                }
+            });
+
+            joinQuit.addJoinRunnable((player) ->  npc.show(player));
+        });
+
     }
 
     public Database handleDatabase()

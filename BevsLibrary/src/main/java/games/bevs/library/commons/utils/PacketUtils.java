@@ -8,10 +8,11 @@ import java.lang.reflect.InvocationTargetException;
 public class PacketUtils
 {
 
-    public static void sendPacket(Player player, Object packet) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException, ClassNotFoundException {
+    public static void sendPacket(Player player, Object... packets) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException, ClassNotFoundException {
         Object nmsPlayer = player.getClass().getMethod("getHandle").invoke(player);
         Object connection = nmsPlayer.getClass().getField("playerConnection").get(nmsPlayer);
-        connection.getClass().getMethod("sendPacket", Packet.class).invoke(connection, packet);
+        for(Object packet : packets)
+            connection.getClass().getMethod("sendPacket", Packet.class).invoke(connection, packet);
     }
 
 

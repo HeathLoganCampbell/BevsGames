@@ -22,7 +22,7 @@ public class ChatSetting
 
         TextComponent message = new TextComponent((playerdata.getRank() == Rank.NORMAL ?  CC.gray : CC.white ) + oldMessage);
 
-        usernameMsg.setClickEvent( new ClickEvent( ClickEvent.Action.SUGGEST_COMMAND, "/msg " + sender.getName()) );
+        usernameMsg.setClickEvent( new ClickEvent( ClickEvent.Action.SUGGEST_COMMAND, "/msg " + sender.getName() + " ") );
         StringBuilder strBuilder = new StringBuilder();
         //HOVER
         strBuilder.append(CC.yellow).append(playerdata.getUsername()).append("\n");
